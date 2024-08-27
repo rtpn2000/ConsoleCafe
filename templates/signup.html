@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Level Up Your Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        function updateProgressBar() {
+            const fields = document.querySelectorAll('.form-group input');
+            const progressBar = document.querySelector('.progress-bar-inner');
+            const levelText = document.querySelector('.level');
+            let completedFields = 0;
+
+            fields.forEach(field => {
+                if (field.value.trim() !== '') {
+                    completedFields++;
+                }
+            });
+
+            const progressPercentage = (completedFields / fields.length) * 100;
+            progressBar.style.width = progressPercentage + '%';
+
+            if (progressPercentage === 100) {
+                levelText.textContent = "Level Up!";
+            } else {
+                levelText.textContent = `Level ${Math.ceil(completedFields / fields.length * 5)}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fields = document.querySelectorAll('.form-group input');
+            fields.forEach(field => {
+                field.addEventListener('input', updateProgressBar);
+            });
+            updateProgressBar();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Level Up Your Account</h2>
+        <div class="progress-bar">
+            <div class="progress-bar-inner"></div>
+        </div>
+        <div class="level">Level 1</div>
+        <form action="{{ url_for('signup') }}" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit">Complete Signup</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
+    </div>
+
+    <footer>
+        <p>&copy; Console Cafe</p>
+    </footer>
+</body>
+</html>
